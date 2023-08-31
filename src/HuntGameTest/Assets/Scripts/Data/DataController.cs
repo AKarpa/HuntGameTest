@@ -15,16 +15,17 @@ namespace Data
         {
             _dataProxies = dataProxies;
             _saveSystem = saveSystem;
-
-            Observable.EveryApplicationPause().Subscribe(delegate(bool b)
-            {
-                _saveSystem.SaveGameState(_gameStateModel);
-            });
         }
 
         public void Initialize()
         {
             _gameStateModel = _saveSystem.RetrieveGameState();
+            
+            Observable.EveryApplicationPause().Subscribe(delegate(bool b)
+            {
+                _saveSystem.SaveGameState(_gameStateModel);
+            });
+            
             foreach (IDataProxy dataProxy in _dataProxies)
             {
                 dataProxy.SetGameState(_gameStateModel);

@@ -13,15 +13,12 @@ namespace Infrastructure.GameStateMachine
         private readonly GameStateMachine _gameStateMachine;
         private readonly SceneLoader _sceneLoader;
         private readonly DataController _dataController;
-        private readonly SaveSystem _saveSystem;
 
-        public BootstrapState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, DataController dataController,
-            SaveSystem saveSystem)
+        public BootstrapState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, DataController dataController)
         {
             _gameStateMachine = gameStateMachine;
             _sceneLoader = sceneLoader;
             _dataController = dataController;
-            _saveSystem = saveSystem;
         }
 
         public void Enter()
@@ -38,7 +35,7 @@ namespace Infrastructure.GameStateMachine
 #endif
             _dataController.Initialize();
 
-            _gameStateMachine.Enter<LoadLevelState, SceneName>(SceneName.MainScene);
+            _gameStateMachine.Enter<LoadLevelState, SceneName>(SceneName.MergeScene);
         }
 
         public void Exit()

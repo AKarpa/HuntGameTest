@@ -6,9 +6,9 @@ namespace Infrastructure.GameStateMachine
 {
     public class GameStateMachine : StateMachine
     {
-        public GameStateMachine(SceneLoader sceneLoader, DataController dataController, SaveSystem saveSystem)
+        public GameStateMachine(SceneLoader sceneLoader, DataController dataController)
         {
-            AddNewState(new BootstrapState(this, sceneLoader, dataController, saveSystem));
+            AddNewState(new BootstrapState(this, sceneLoader, dataController));
             AddNewState(new LoadLevelState(this, sceneLoader));
             AddNewState(new GameLoopState());
 

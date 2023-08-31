@@ -3,7 +3,6 @@
     public enum SceneName
     {
         BootScene,
-        LoadingScene,
-        MainScene
+        MergeScene
     }
 }

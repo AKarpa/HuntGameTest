@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using Balances;
 using Data.Models;
 using UnityEngine;
 
@@ -6,29 +7,33 @@ namespace Data
 {
     public class SaveSystem
     {
+        private readonly StartingGoldBalance _startingGoldBalance;
         private readonly string _savePath;
 
-        public SaveSystem()
+        public SaveSystem(StartingGoldBalance startingGoldBalance)
         {
+            _startingGoldBalance = startingGoldBalance;
             _savePath = Application.persistentDataPath + "/game_save.txt";
         }
 
         public void SaveGameState(GameStateModel gameStateModel)
         {
             string json = JsonUtility.ToJson(gameStateModel);
-            
-            StreamWriter writer = new(_savePath, true);
-            writer.WriteLine(json);
-            writer.Close();
+            File.WriteAllText(_savePath, json);
         }
 
         public GameStateModel RetrieveGameState()
         {
-            string path = Application.persistentDataPath + "/test.txt";
-            StreamReader reader = new(path);
-            string json = reader.ReadToEnd();
-            reader.Close();
-            return JsonUtility.FromJson<GameStateModel>(json);
+            if (!File.Exists(_savePath))
+            {
+                FileStream fileStream = File.Create(_savePath);
+                fileStream.Close();
+            }
+            
+            string json = File.ReadAllText(_savePath);
+            return string.IsNullOrEmpty(json)
+                ? GameStateModel.CreateNewModel(_startingGoldBalance.StartingGold)
+                : JsonUtility.FromJson<GameStateModel>(json);
         }
     }
 }
