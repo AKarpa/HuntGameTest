@@ -12,3 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c2bd738d9917a0940b010e310e4cc5b1, type: 3}
   m_Name: GameBalancesSO
   m_EditorClassIdentifier: 
+  startingGoldBalance:
+    startingGold: 120
+  buyAnimalBalance:
+    buyPrice: 35
