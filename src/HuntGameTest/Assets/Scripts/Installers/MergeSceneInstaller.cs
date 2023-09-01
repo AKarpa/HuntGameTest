@@ -11,12 +11,13 @@ namespace Installers
         
         public override void InstallBindings()
         {
+            Container.Bind<MergeGrid.MergeGrid>().FromComponentInHierarchy().AsSingle();
             Container.BindFactory<int, GridAnimal, GridAnimalFactory>()
                 .FromPoolableMemoryPool<int, GridAnimal, GridAnimalPool>(x =>
                     x.WithInitialSize(5).FromComponentInNewPrefab(gridAnimalPrefab));
         }
         
-        private class GridAnimalPool : PoolableMemoryPool<int, IMemoryPool, GridAnimal>
+        private class GridAnimalPool : MonoPoolableMemoryPool<int, IMemoryPool, GridAnimal>
         {
             
         }

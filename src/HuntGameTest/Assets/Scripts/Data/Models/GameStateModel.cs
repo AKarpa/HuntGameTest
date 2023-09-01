@@ -17,8 +17,7 @@ namespace Data.Models
                 gold = startingGold,
                 grid = new GridModel
                 {
-                    huntingPack = new List<GridElementModel>(),
-                    other = new List<GridElementModel>()
+                    gridElementModels = new List<GridElementModel>(),
                 }
             };
         }

@@ -9,11 +9,22 @@ namespace UI.MergeScene
     public class MergeSceneHUDView : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI goldText;
+        [SerializeField] private TextMeshProUGUI buyPriceText;
         [SerializeField] private Button buyButton;
         [SerializeField] private Button playButton;
 
         public event Action ClickedBuyButton;
         public event Action ClickedPlayButton;
+
+        public void SetBuyPrice(int gold)
+        {
+            buyPriceText.text = gold.ToString();
+        }
+        
+        public void SetGold(int gold)
+        {
+            goldText.text = gold.ToString();
+        }
         
         private void Awake()
         {
@@ -25,11 +36,6 @@ namespace UI.MergeScene
             {
                 ClickedPlayButton?.Invoke();
             });
-        }
-
-        public void SetGold(int gold)
-        {
-            goldText.text = gold.ToString();
         }
     }
 }

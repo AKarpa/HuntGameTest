@@ -3,6 +3,7 @@ using System.Linq;
 using Data.Models;
 using Data.Models.Grid;
 using MergeGrid;
+using UnityEngine;
 
 namespace Data.DataProxies
 {
@@ -10,20 +11,18 @@ namespace Data.DataProxies
     {
         private GridModel _grid;
 
-        public IEnumerable<GridElementInfo> HuntingPack => _grid.huntingPack.Select(GetGridElementInfo);
-        public IEnumerable<GridElementInfo> Other => _grid.other.Select(GetGridElementInfo);
+        public IEnumerable<GridElementInfo> GridElementInfos => _grid.gridElementModels.Select(GetGridElementInfo);
 
-        public void AddAnimal(int x, int y, int level, bool isHuntingPack)
+        public void AddAnimal(Vector2Int coords, int level)
         {
-            List<GridElementModel> gridPart = isHuntingPack ? _grid.huntingPack : _grid.other;
-            gridPart.Add(new GridElementModel
+            _grid.gridElementModels.Add(new GridElementModel
             {
                 animal = new AnimalModel
                 {
                     level = level
                 },
-                x = x,
-                y = y
+                x = coords.x,
+                y = coords.y
             });
         }
 
@@ -35,6 +34,26 @@ namespace Data.DataProxies
         private static GridElementInfo GetGridElementInfo(GridElementModel model)
         {
             return new GridElementInfo(model.x, model.y, model.animal.level);
+        }
+
+        public void MoveAnimal(Vector2Int prevCoords, Vector2Int coords)
+        {
+            GridElementModel gridElementModel =
+                _grid.gridElementModels.Find(model => model.x == prevCoords.x && model.y == prevCoords.y);
+            gridElementModel.x = coords.x;
+            gridElementModel.y = coords.y;
+        }
+
+        public void MergeAnimals(Vector2Int droppedAnimalCoords, Vector2Int coords)
+        {
+            GridElementModel droppedAnimal =
+                _grid.gridElementModels.Find(model =>
+                    model.x == droppedAnimalCoords.x && model.y == droppedAnimalCoords.y);
+            _grid.gridElementModels.Remove(droppedAnimal);
+            GridElementModel mergedAnimal =
+                _grid.gridElementModels.Find(model =>
+                    model.x == coords.x && model.y == coords.y);
+            mergedAnimal.animal.level++;
         }
     }
 }

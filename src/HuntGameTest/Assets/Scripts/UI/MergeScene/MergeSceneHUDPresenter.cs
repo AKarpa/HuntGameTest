@@ -3,7 +3,6 @@ using Data.DataProxies;
 using UniRx;
 using UnityEngine;
 using Zenject;
-using Grid = MergeGrid.Grid;
 
 namespace UI.MergeScene
 {
@@ -13,12 +12,12 @@ namespace UI.MergeScene
         private MergeSceneHUDView _view;
         private GoldDataProxy _goldDataProxy;
         private BuyAnimalBalance _buyAnimalBalance;
-        private Grid _grid;
+        private MergeGrid.MergeGrid _mergeGrid;
 
         [Inject]
-        public void Construct(GoldDataProxy goldDataProxy, BuyAnimalBalance buyAnimalBalance, Grid grid)
+        public void Construct(GoldDataProxy goldDataProxy, BuyAnimalBalance buyAnimalBalance, MergeGrid.MergeGrid mergeGrid)
         {
-            _grid = grid;
+            _mergeGrid = mergeGrid;
             _buyAnimalBalance = buyAnimalBalance;
             _goldDataProxy = goldDataProxy;
         }
@@ -31,11 +30,12 @@ namespace UI.MergeScene
                 int buyPrice = _buyAnimalBalance.BuyPrice;
                 if (_goldDataProxy.Gold.Value < buyPrice) return;
                 _goldDataProxy.SubtractGold(buyPrice);
-                _grid.SpawnNewGridAnimal();
+                _mergeGrid.SpawnNewGridAnimal();
             };
             _view.ClickedPlayButton += delegate { };
 
             _goldDataProxy.Gold.Subscribe(delegate(int gold) { _view.SetGold(gold); }).AddTo(this);
+            _view.SetBuyPrice(_buyAnimalBalance.BuyPrice);
         }
     }
 }
