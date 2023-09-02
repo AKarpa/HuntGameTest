@@ -3,6 +3,7 @@
     public enum SceneName
     {
         BootScene,
-        MergeScene
+        MergeScene,
+        HuntScene
     }
 }

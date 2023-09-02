@@ -9,6 +9,7 @@ namespace Data.Models
     {
         public int gold;
         public GridModel grid;
+        public HuntModel hunt;
 
         public static GameStateModel CreateNewModel(int startingGold)
         {
@@ -18,6 +19,11 @@ namespace Data.Models
                 grid = new GridModel
                 {
                     gridElementModels = new List<GridElementModel>(),
+                },
+                hunt = new HuntModel
+                {
+                    level = 1,
+                    huntingPack = new List<AnimalModel>()
                 }
             };
         }

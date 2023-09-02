@@ -11,7 +11,7 @@ namespace Installers
         
         public override void InstallBindings()
         {
-            Container.Bind<MergeGrid.MergeGrid>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<Grid.MergeGrid>().FromComponentInHierarchy().AsSingle();
             Container.BindFactory<int, GridAnimal, GridAnimalFactory>()
                 .FromPoolableMemoryPool<int, GridAnimal, GridAnimalPool>(x =>
                     x.WithInitialSize(5).FromComponentInNewPrefab(gridAnimalPrefab));

@@ -12,6 +12,8 @@ namespace Data.DataProxies
         private GridModel _grid;
 
         public IEnumerable<GridElementInfo> GridElementInfos => _grid.gridElementModels.Select(GetGridElementInfo);
+        public IEnumerable<int> HuntingPack =>
+            _grid.gridElementModels.Where(IsInHuntingPack).Select(model => model.animal.level);
 
         public void AddAnimal(Vector2Int coords, int level)
         {
@@ -24,16 +26,6 @@ namespace Data.DataProxies
                 x = coords.x,
                 y = coords.y
             });
-        }
-
-        void IDataProxy.SetGameState(GameStateModel gameStateModel)
-        {
-            _grid = gameStateModel.grid;
-        }
-
-        private static GridElementInfo GetGridElementInfo(GridElementModel model)
-        {
-            return new GridElementInfo(model.x, model.y, model.animal.level);
         }
 
         public void MoveAnimal(Vector2Int prevCoords, Vector2Int coords)
@@ -54,6 +46,21 @@ namespace Data.DataProxies
                 _grid.gridElementModels.Find(model =>
                     model.x == coords.x && model.y == coords.y);
             mergedAnimal.animal.level++;
+        }
+        
+        void IDataProxy.SetGameState(GameStateModel gameStateModel)
+        {
+            _grid = gameStateModel.grid;
+        }
+
+        private static GridElementInfo GetGridElementInfo(GridElementModel model)
+        {
+            return new GridElementInfo(model.x, model.y, model.animal.level);
+        }
+        
+        private static bool IsInHuntingPack(GridElementModel model)
+        {
+            return model.x == 0;
         }
     }
 }

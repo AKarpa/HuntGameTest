@@ -1,5 +1,6 @@
 ﻿using Balances;
 using Data.DataProxies;
+using Scenes;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -12,11 +13,15 @@ namespace UI.MergeScene
         private MergeSceneHUDView _view;
         private GoldDataProxy _goldDataProxy;
         private BuyAnimalBalance _buyAnimalBalance;
-        private MergeGrid.MergeGrid _mergeGrid;
+        private Grid.MergeGrid _mergeGrid;
+        private HuntDataProxy _huntDataProxy;
+        private SceneLoader _sceneLoader;
 
         [Inject]
-        public void Construct(GoldDataProxy goldDataProxy, BuyAnimalBalance buyAnimalBalance, MergeGrid.MergeGrid mergeGrid)
+        public void Construct(GoldDataProxy goldDataProxy, BuyAnimalBalance buyAnimalBalance,
+            Grid.MergeGrid mergeGrid, SceneLoader sceneLoader)
         {
+            _sceneLoader = sceneLoader;
             _mergeGrid = mergeGrid;
             _buyAnimalBalance = buyAnimalBalance;
             _goldDataProxy = goldDataProxy;
@@ -32,7 +37,10 @@ namespace UI.MergeScene
                 _goldDataProxy.SubtractGold(buyPrice);
                 _mergeGrid.SpawnNewGridAnimal();
             };
-            _view.ClickedPlayButton += delegate { };
+            _view.ClickedPlayButton += delegate
+            {
+                _sceneLoader.LoadScene(SceneName.HuntScene);
+            };
 
             _goldDataProxy.Gold.Subscribe(delegate(int gold) { _view.SetGold(gold); }).AddTo(this);
             _view.SetBuyPrice(_buyAnimalBalance.BuyPrice);

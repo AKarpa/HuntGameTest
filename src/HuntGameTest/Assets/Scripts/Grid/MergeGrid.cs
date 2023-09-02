@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Data.DataProxies;
+using MergeGrid;
 using MergeGrid.GridAnimals;
 using ModestTree;
 using UnityEngine;
 using Zenject;
 
-namespace MergeGrid
+namespace Grid
 {
     public class MergeGrid : MonoBehaviour
     {
@@ -94,6 +95,7 @@ namespace MergeGrid
                 {
                     animalTransform.localPosition = Vector3.zero;
                 }
+
                 return;
             }
 
