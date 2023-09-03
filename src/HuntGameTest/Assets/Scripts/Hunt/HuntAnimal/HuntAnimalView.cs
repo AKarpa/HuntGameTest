@@ -6,6 +6,7 @@ namespace Hunt.HuntAnimal
     public class HuntAnimalView : MonoBehaviour
     {
         [SerializeField] private Animator[] models;
+        [SerializeField] private Transform jumpAim;
         private Animator _modelAnimator;
         private Transform _transform;
         private static readonly int Move = Animator.StringToHash("Move");
@@ -45,12 +46,28 @@ namespace Hunt.HuntAnimal
                 Vector3 followPosition = followTransform.position;
                 Vector3 currentPosition = _transform.position;
                 Vector3 direction = followPosition - currentPosition;
-                Vector3 newPosition = currentPosition + Mathf.Min(RunningSpeed * Time.deltaTime, direction.magnitude) * direction.normalized;
-                Quaternion lookRotation = Quaternion.LookRotation(newPosition - currentPosition);
-                _transform.rotation = Quaternion.Lerp(_transform.rotation, lookRotation, Time.deltaTime * Damping);
-                _transform.position = newPosition;
+                if (direction.magnitude > 0.1f)
+                {
+                    Vector3 newPosition = currentPosition +
+                                          Mathf.Min(RunningSpeed * Time.deltaTime, direction.magnitude) *
+                                          direction.normalized;
+                    Quaternion lookRotation = Quaternion.LookRotation(newPosition - currentPosition);
+                    _transform.rotation = Quaternion.Lerp(_transform.rotation, lookRotation, Time.deltaTime * Damping);
+                    _transform.position = newPosition;
+                }
+
                 yield return null;
             }
+        }
+
+        public void SetJumpAimActive(bool active)
+        {
+            jumpAim.gameObject.SetActive(active);
+        }
+
+        public void SetJumpAimPosition(Vector3 jumpAimPosition)
+        {
+            jumpAim.localPosition = jumpAimPosition;
         }
     }
 }

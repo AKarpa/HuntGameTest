@@ -15,6 +15,7 @@ namespace Installers
             Container.BindInterfacesAndSelfTo<HuntingPack>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<PreyPresenter>().FromComponentInHierarchy().AsSingle();
             Container.BindInterfacesAndSelfTo<HuntCamera>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<HuntInput>().FromComponentInHierarchy().AsSingle();
             Container.BindFactory<HuntAnimalSpawnInfo, HuntAnimalPresenter, HuntAnimalFactory>()
                 .FromPoolableMemoryPool<HuntAnimalSpawnInfo, HuntAnimalPresenter, HuntAnimalPool>(x =>
                     x.WithInitialSize(5).FromComponentInNewPrefab(huntAnimalPrefab));

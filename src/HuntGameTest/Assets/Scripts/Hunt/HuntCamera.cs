@@ -9,7 +9,7 @@ namespace Hunt
         private Transform _transform;
         private Transform _followTarget;
         private Transform _lookTarget;
-        private const float Damping = 10f;
+        private const float Damping = 2.5f;
 
 
         private void Awake()

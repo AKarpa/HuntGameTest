@@ -9,6 +9,26 @@ namespace Hunt.HuntAnimal
     {
         private HuntAnimalView _view;
         private IMemoryPool _pool;
+        private const float MaxJumpLength = 3f;
+        
+        public void SetJumpDirection(Vector2 jumpDirection)
+        {
+            _view.SetJumpAimActive(CanJump(jumpDirection));
+            if (CanJump(jumpDirection))
+            {
+                _view.SetJumpAimPosition(MaxJumpLength * new Vector3(jumpDirection.x, 0f, jumpDirection.y));
+            }
+        }
+
+        public bool CanJump(Vector2 jumpDirection)
+        {
+            return jumpDirection.y <= 0.1f;
+        }
+
+        public void Jump(Vector2 deltaPositionValue)
+        {
+            
+        }
 
         public void Dispose()
         {
