@@ -1,4 +1,6 @@
 ﻿using System;
+using Balances;
+using Hunt.Prey;
 using UnityEngine;
 using Zenject;
 
@@ -9,25 +11,37 @@ namespace Hunt.HuntAnimal
     {
         private HuntAnimalView _view;
         private IMemoryPool _pool;
-        private const float MaxJumpLength = 3f;
+        private HuntAnimalSpawnInfo _spawnInfo;
+        private AnimalBalances _animalBalances;
+        private const float MaxJumpLength = 9f;
         
-        public void SetJumpDirection(Vector2 jumpDirection)
+        [Inject]
+        public void Construct(AnimalBalances animalBalances)
         {
-            _view.SetJumpAimActive(CanJump(jumpDirection));
-            if (CanJump(jumpDirection))
+            _animalBalances = animalBalances;
+        }
+        
+        public void SetJumpDirection(Vector2 jumpScreenDirection)
+        {
+            _view.SetJumpAimActive(CanJump(jumpScreenDirection));
+            if (CanJump(jumpScreenDirection))
             {
-                _view.SetJumpAimPosition(MaxJumpLength * new Vector3(jumpDirection.x, 0f, jumpDirection.y));
+                _view.SetJumpAimPosition(GetJumpDirection(jumpScreenDirection));
             }
         }
 
-        public bool CanJump(Vector2 jumpDirection)
+        public static bool CanJump(Vector2 jumpScreenDirection)
         {
-            return jumpDirection.y <= 0.1f;
+            return jumpScreenDirection.y <= -0.1f;
         }
 
-        public void Jump(Vector2 deltaPositionValue)
+        public void Jump(Vector2 jumpScreenDirection, Action onJumpEnded)
         {
-            
+            _view.Jump(GetJumpDirection(jumpScreenDirection), onJumpEnded, delegate(PreyPresenter presenter)
+            {
+                int damage = _animalBalances.GetLevelBalance(_spawnInfo.Level).Damage;
+                presenter.ReceiveDamage(damage);
+            }, Dispose);
         }
 
         public void Dispose()
@@ -37,6 +51,7 @@ namespace Hunt.HuntAnimal
 
         void IPoolable<HuntAnimalSpawnInfo, IMemoryPool>.OnSpawned(HuntAnimalSpawnInfo spawnInfo, IMemoryPool pool)
         {
+            _spawnInfo = spawnInfo;
             _pool = pool;
             _view.SetLevel(spawnInfo.Level);
             _view.StartFollowing(spawnInfo.FollowTransform);
@@ -50,6 +65,16 @@ namespace Hunt.HuntAnimal
         private void Awake()
         {
             _view = GetComponent<HuntAnimalView>();
+        }
+        
+        private static Vector3 GetJumpDirection(Vector2 jumpScreenDirection)
+        {
+            return -MaxJumpLength * new Vector3(jumpScreenDirection.x, 0f, jumpScreenDirection.y);
+        }
+
+        public void StopFollow()
+        {
+            _view.StopFollow();
         }
     }
 }

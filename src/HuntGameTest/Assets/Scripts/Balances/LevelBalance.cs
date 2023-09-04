@@ -6,8 +6,10 @@ namespace Balances
     [Serializable]
     public class LevelBalance
     {
-        [SerializeField] private float preyHealth;
+        [SerializeField] private int preyHealth;
+        [SerializeField] private int reward;
         
-        public float PreyHealth => preyHealth;
+        public int PreyHealth => preyHealth;
+        public int Reward => reward;
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System;
-using MergeGrid.GridAnimals;
+using Grid.GridAnimals;
 using UnityEngine;
 using Zenject;
 

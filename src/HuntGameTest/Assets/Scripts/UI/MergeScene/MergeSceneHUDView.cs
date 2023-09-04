@@ -10,6 +10,7 @@ namespace UI.MergeScene
     {
         [SerializeField] private TextMeshProUGUI goldText;
         [SerializeField] private TextMeshProUGUI buyPriceText;
+        [SerializeField] private TextMeshProUGUI levelText;
         [SerializeField] private Button buyButton;
         [SerializeField] private Button playButton;
 
@@ -24,6 +25,11 @@ namespace UI.MergeScene
         public void SetGold(int gold)
         {
             goldText.text = gold.ToString();
+        }
+
+        public void SetLevel(int level)
+        {
+            levelText.text = $"Level: {level}";
         }
         
         private void Awake()

@@ -1,6 +1,6 @@
 ﻿using Zenject;
 
-namespace MergeGrid.GridAnimals
+namespace Grid.GridAnimals
 {
     public class GridAnimalFactory : PlaceholderFactory<int, GridAnimal>
     {

@@ -10,16 +10,24 @@ namespace Hunt.Prey
         [SerializeField] private PathCreator pathCreator;
         [SerializeField] private Animator animator;
         [SerializeField] private Transform[] followTransforms;
-        private Transform _transform;
+        [SerializeField] private PreyHealth preyHealth;
         private static readonly int Move = Animator.StringToHash("Move");
+        private static readonly int Idle = Animator.StringToHash("Idle");
+        private Transform _transform;
+        private Coroutine _runningCoroutine;
         private const float RunningSpeed = 2f;
-        private const float Damping = 10f;
+        private const float Damping = 5f;
         
         public Transform[] FollowTransforms => followTransforms;
 
         public void StartRunning()
         {
-            StartCoroutine(Running());
+            _runningCoroutine = StartCoroutine(Running());
+        }
+
+        public void SetHealth(int health, int maxHealth)
+        {
+            preyHealth.SetHealth(health, maxHealth);
         }
 
         private void Awake()
@@ -40,6 +48,13 @@ namespace Hunt.Prey
                 _transform.position = newPosition;
                 yield return null;
             }
+        }
+
+        public void StopRunning()
+        {
+            StopCoroutine(_runningCoroutine);
+            animator.SetBool(Move, false);
+            animator.SetBool(Idle, true);
         }
     }
 }

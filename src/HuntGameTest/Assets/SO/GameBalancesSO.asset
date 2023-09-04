@@ -16,3 +16,18 @@ MonoBehaviour:
     startingGold: 120
   buyAnimalBalance:
     buyPrice: 35
+  levelBalances:
+    levelBalances:
+    - preyHealth: 20
+      reward: 30
+    - preyHealth: 30
+      reward: 50
+    - preyHealth: 40
+      reward: 70
+    - preyHealth: 60
+      reward: 90
+  animalBalances:
+    animalLevelBalances:
+    - damage: 10
+    - damage: 20
+    - damage: 40

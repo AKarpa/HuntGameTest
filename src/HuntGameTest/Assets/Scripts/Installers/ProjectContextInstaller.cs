@@ -22,6 +22,7 @@ namespace Installers
         {
             Container.BindInterfacesAndSelfTo<GoldDataProxy>().AsSingle().NonLazy();
             Container.BindInterfacesAndSelfTo<GridDataProxy>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<HuntDataProxy>().AsSingle().NonLazy();
         }
     }
 }

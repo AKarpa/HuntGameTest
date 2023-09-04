@@ -20,6 +20,11 @@ namespace Data.DataProxies
             _gold.Value -= amount;
         }
 
+        public void AddGold(int amount)
+        {
+            _gold.Value += amount;
+        }
+
         void IDataProxy.SetGameState(GameStateModel gameStateModel)
         {
             _gold.Value = gameStateModel.gold;

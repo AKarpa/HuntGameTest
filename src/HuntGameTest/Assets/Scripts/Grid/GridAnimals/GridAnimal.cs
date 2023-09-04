@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using DG.Tweening;
+using MergeGrid;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
 
-namespace MergeGrid.GridAnimals
+namespace Grid.GridAnimals
 {
     public class GridAnimal : MonoBehaviour, IPoolable<int, IMemoryPool>, IDisposable
     {
@@ -32,6 +32,7 @@ namespace MergeGrid.GridAnimals
 
         public void Dispose()
         {
+            _transform.SetParent(null);
             _pool.Despawn(this);
         }
 

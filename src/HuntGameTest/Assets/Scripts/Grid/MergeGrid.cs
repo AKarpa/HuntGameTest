@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Balances;
 using Data.DataProxies;
+using Grid.GridAnimals;
 using MergeGrid;
-using MergeGrid.GridAnimals;
 using ModestTree;
 using UnityEngine;
 using Zenject;
@@ -17,13 +18,19 @@ namespace Grid
         private GridDataProxy _gridDataProxy;
         private GridAnimalFactory _gridAnimalFactory;
         private readonly Dictionary<Vector2Int, GridAnimal> _gridAnimals = new();
+        private AnimalBalances _animalBalances;
 
         [Inject]
-        public void Construct(GridDataProxy gridDataProxy, GridAnimalFactory gridAnimalFactory)
+        public void Construct(GridDataProxy gridDataProxy, GridAnimalFactory gridAnimalFactory,
+            AnimalBalances animalBalances)
         {
+            _animalBalances = animalBalances;
             _gridAnimalFactory = gridAnimalFactory;
             _gridDataProxy = gridDataProxy;
         }
+
+        public bool IsFull => _gridAnimals.Count >= gridElements.Length;
+
 
         public void SpawnNewGridAnimal()
         {
@@ -83,7 +90,8 @@ namespace Grid
             Vector2Int prevCoords = _gridAnimals.First(pair => pair.Value == gridAnimal).Key;
             if (_gridAnimals.TryGetValue(coords, out GridAnimal dropOverAnimal))
             {
-                if (dropOverAnimal.Level == gridAnimal.Level)
+                if (dropOverAnimal.Level == gridAnimal.Level && dropOverAnimal.Level < _animalBalances.MaxLevel &&
+                    dropOverAnimal != gridAnimal)
                 {
                     dropOverAnimal.SetLevel(dropOverAnimal.Level + 1);
                     gridAnimal.DroppedOverGridElement -= OnDroppedOverGridElement;
